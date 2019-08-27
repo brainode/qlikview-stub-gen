@@ -17,12 +17,12 @@ namespace StubGenerator
         {
             StringBuilder answer = new StringBuilder();
             answer.Append("if(");
-            bool prevMeasureWCond = false;
+            string prevMeasureCond = null;
             foreach(var measure in measures)
             {
                 if (measure != measures.First())
                 {
-                    if (prevMeasureWCond)
+                    if (prevMeasureCond != null && measure.Item1 != null && prevMeasureCond!=measure.Item1)
                     {
                         answer.Append(" or ");
                     }
@@ -34,8 +34,8 @@ namespace StubGenerator
                 //TODO. What about named parameters?Check Program.cs
                 if (measure.Item1 != null)
                 {
-                    prevMeasureWCond = true;
-                    answer.AppendFormat("({0} and alt({1})=0)",measure.Item1,measure.Item2);
+                    prevMeasureCond = measure.Item1;
+                    answer.AppendFormat("({0} and alt({1},0)=0)",measure.Item1,measure.Item2);
                 }
                 else
                 {
